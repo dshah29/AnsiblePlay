@@ -1,0 +1,46 @@
+---
+
+# 19.7
+
+- name: "19.7.4.1 (L1) Ensure 'Do not preserve zone information in file attachments' is set to 'Disabled'"
+  win_regedit:
+    path: HKU:\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments
+    name: "SaveZoneInformation"
+    data: "0"
+    type: dword
+
+- name: "19.7.4.2 (L1) Ensure 'Notify antivirus programs when opening attachments' is set to 'Enabled'"
+  win_regedit:
+    path: HKU:\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Attachments
+    name: "ScanWithAntiVirus"
+    data: "1"
+    type: dword
+
+- name: "19.7.7.1 (L1) Ensure 'Configure Windows spotlight on lock screen' is set to Disabled'"
+  win_regedit:
+    path: HKU:\.DEFAULT\SOFTWARE\Policies\Microsoft\Windows\CloudContent
+    name: "ConfigureWindowsSpotlight"
+    data: "0"
+    type: dword
+
+- name: "19.7.7.2 (L1) Ensure 'Do not suggest third-party content in Windows spotlight' is set to 'Enabled'"
+  win_regedit:
+    path: HKU:\.DEFAULT\SOFTWARE\Policies\Microsoft\Windows\CloudContent
+    name: "DisableThirdPartySuggestions"
+    data: "1"
+    type: dword
+
+
+- name: "19.7.26.1 (L1) Ensure 'Prevent users from sharing files within their profile.' is set to 'Enabled'"
+  win_regedit:
+    path: HKU:\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
+    name: "NoInplaceSharing"
+    data: "1"
+    type: dword
+
+- name: "19.7.40.1 (L1) Ensure 'Always install with elevated privileges' is set to 'Disabled'"
+  win_regedit:
+    path: HKU:\.DEFAULT\Policies\Microsoft\Windows\Installer
+    name: "AlwaysInstallElevated"
+    data: "0"
+    type: dword

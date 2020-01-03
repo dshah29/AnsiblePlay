@@ -1,0 +1,28 @@
+---
+
+# 17.5 Logon / Logoff
+
+- name: "17.5.1 (L1) Ensure Audit Account Lockout is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: Account Lockout
+    audit_type: success, failure
+
+- name: "17.5.2 (L1) Ensure Audit Logoff is set to Success"
+  win_audit_policy_system:
+    subcategory: Logoff
+    audit_type: success
+
+- name: "17.5.3 (L1) Ensure Audit Logon is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: Logon
+    audit_type: success, failure
+
+- name: "17.5.4 (L1)  Ensure Audit Other Logon/Logoff Events is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: Other Logon/Logoff Events
+    audit_type: success, failure
+
+- name: "17.5.5 (L1)  Ensure Audit Special Logon is set to Success"
+  win_audit_policy_system:
+    subcategory: Special Logon
+    audit_type: success

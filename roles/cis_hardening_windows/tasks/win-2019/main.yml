@@ -1,0 +1,27 @@
+---
+
+# 01 - Account Policies
+- include_tasks: 01/main.yml
+  tags: section1
+
+# 02 - Local Policies
+- include_tasks: 02/main.yml
+  tags: section2
+
+# 09 - Windows Firewall with Advanced Security
+- include_tasks: 09/main.yml
+  tags: section9
+
+# 17 - Advanced Audit Policy Configuration
+- block:
+  - include_tasks: audit_policy_fix.yml
+  - include_tasks: 17/main.yml
+  tags: section17
+
+# 18 - Administrative Templates (Computer)
+- include_tasks: 18/main.yml
+  tags: section18
+
+# 19 - Administrative Templates (Users)
+- include_tasks: 19/main.yml
+  tags: section19

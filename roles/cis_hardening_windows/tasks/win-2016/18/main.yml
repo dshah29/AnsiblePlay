@@ -1,0 +1,9 @@
+---
+
+- include_tasks: 18.1.yml
+- include_tasks: 18.2.yml
+- include_tasks: 18.3.yml
+- include_tasks: 18.4.yml
+- include_tasks: 18.5.yml
+- include_tasks: 18.8.yml
+- include_tasks: 18.9.yml

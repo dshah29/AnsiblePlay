@@ -1,0 +1,32 @@
+---
+
+# you must run this before applying audit policy tasks or 
+# else the changes WON'T PERSIST AFTER REBOOT
+
+# see https://social.technet.microsoft.com/Forums/windowsserver/en-US/03cb345e-baf1-45b7-97e1-b3b7a9ebe119/audit-policy-reset-on-restart
+
+- name: Remove audit files so any change to audit policy persists after reboot
+  win_file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+  - C:\Windows\security\audit\audit.csv
+  - C:\Windows\System32\GroupPolicy\Machine\Microsoft\WindowsNT\Audit\audit.csv
+  - C:\Windows\System32\GroupPolicy\gpt.ini
+  register: remove_audit_files
+
+- block:
+  - name: Reboot the machine 
+    win_reboot:
+      reboot_timeout: 180
+  # One way to ensure the system is reliable, is to set WinRM to a delayed startup
+  - name: Ensure WinRM starts when the system has settled and is ready to work reliably
+    win_service:
+      name: WinRM
+      start_mode: delayed
+    retries: 3
+    delay: 5
+    register: winrm
+    until: winrm is not failed
+
+  when: remove_audit_files.changed

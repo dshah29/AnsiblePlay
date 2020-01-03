@@ -1,0 +1,195 @@
+---
+
+# 18.8.3 Audit Process Creation
+
+# we must enable and then disable this key for report to pass
+- name: "18.8.3.1: must enable and then disable for this key to pass"
+  block:
+    - name: "18.8.3.1 (L1) Ensure 'Include command line in process creation events' is set to 'Disabled'"
+      win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit
+        name: "ProcessCreationIncludeCmdLine_Enabled"
+        data: "1"
+        type: dword
+    - name: "18.8.3.1 (L1) Ensure 'Include command line in process creation events' is set to 'Disabled'"
+      win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit
+        name: "ProcessCreationIncludeCmdLine_Enabled"
+        data: "0"
+        type: dword
+
+# 18.8.4 Credentials Delegation
+
+- name: "18.8.4.1 (L1) Ensure 'Encryption Oracle Remediation' is set to 'Enabled: Force Updated Clients'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters
+    name: "AllowEncryptionOracle"
+    type: dword
+    data: "0"
+
+- name: "18.8.4.2 (L1) Ensure 'Remote host allows delegation of non-exportable credentials' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows\CredentialsDelegation
+    name: "AllowProtectedCreds"
+    type: dword
+    data: "1"
+
+# 18.8.14 Early Launch Antimalware
+
+- name: "18.8.14.1 (L1) Ensure 'Boot-Start Driver Initialization Policy' is set to 'Enabled: Good, unknown and bad but critical'"
+  win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Policies\EarlyLaunch
+    name: "DriverLoadPolicy"
+    data: "3"
+    type: dword
+
+# 18.8.21  Logging and tracing
+
+- name: "18.8.21.2 (L1) Ensure 'Configure registry policy processing: Do not apply during periodic background processing' is set to 'Enabled: FALSE'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}
+    name: "NoBackgroundPolicy"
+    data: "0"
+    type: dword
+
+- name: "18.8.21.3 (L1) Ensure 'Configure registry policy processing: Process even if the Group Policy objects have not changed' is set to 'Enabled: TRUE'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\Group Policy\{35378EAC-683F-11D2-A89A-00C04FBBCFA2}
+    name: "NoGPOListChanges"
+    data: "0"
+    type: dword
+
+- name: "18.8.21.4 (L1) Ensure 'Continue experiences on this device' is set to 'Disabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: "EnableCdp"
+    data: "0"
+    type: dword
+
+# While this should be the correct configuration for this setting, it doesn't appear to result in a pass for the CIS benchmark. At least not when the Assessor CLI is executed.
+- name: "18.8.21.5 (L1) Ensure 'Turn off background refresh of Group Policy' is set to 'Disabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+    name: "DisableBkGndGroupPolicy"
+    data: "0"
+    type: dword
+  tags:
+    - never
+    - 18.8.21.5
+
+# 18.8.22 Internet Communication settings
+
+- name: "18.8.22.1.1 (L1) Ensure 'Turn off downloading of print drivers over HTTP' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Printers
+    name: "DisableWebPnPDownload"
+    data: "1"
+    type: dword
+
+- name: "18.8.22.1.5 (L1) Ensure 'Turn off Internet download for Web publishing and online ordering wizards' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer
+    name: "NoWebServices"
+    data: "1"
+    type: dword
+
+# 18.8.26 Kernel DMA Protection
+
+- name: "18.8.26.1 (L1) Ensure 'Enumeration policy for external devices incompatible with Kernel DMA Protection' is set to 'Enabled: Block All'" 
+  win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows\Kernel DMA Protection
+    name: "DeviceEnumerationPolicy"
+    data: "0"
+    type: dword
+
+# 18.8.28 Logon
+
+- name: "18.8.28.1 (L1) Ensure 'Block user from showing account details on sign-in' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: "BlockUserFromShowingAccountDetailsOnSignin"
+    data: "1"
+    type: dword
+
+- name: "18.8.28.2 (L1) Ensure 'Do not display network selection UI' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: "DontDisplayNetworkSelectionUI"
+    data: "1"
+    type: dword
+
+- name: "18.8.28.3 (L1) Ensure 'Do not enumerate connected users on domain-joined computers' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: "DontEnumerateConnectedUsers"
+    data: "1"
+    type: dword
+
+- name: "18.8.28.4 (L1) Ensure 'Enumerate local users on domain-joined computers' is set to 'Disabled' (MS only)"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: "EnumerateLocalUsers"
+    data: "0"
+    type: dword
+
+- name: "18.8.28.5 (L1) Ensure 'Turn off app notifications on the lock screen' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: "DisableLockScreenAppNotifications"
+    data: "1"
+    type: dword
+
+- name: "18.8.28.6 (L1) Ensure 'Turn off picture password sign-in' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: "BlockDomainPicturePassword"
+    data: "1"
+    type: dword
+
+- name: "18.8.28.7 (L1) Ensure 'Turn on convenience PIN sign-in' is set to 'Disabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows\System
+    name: "AllowDomainPINLogon"
+    data: "0"
+    type: dword
+
+# 18.8.34 Sleep Settings
+- name: "18.8.34.6.3 (L1) Ensure 'Require a password when a computer wakes (on battery)' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51
+    name: "DCSettingIndex"
+    data: "1"
+    type: dword
+
+- name: "18.8.34.6.4 (L1) Ensure 'Require a password when a computer wakes (plugged in)' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Power\PowerSettings\0e796bdb-100d-47d6-a2d5-f7d2daa51f51
+    name: "ACSettingIndex"
+    data: "1"
+    type: dword
+
+
+# 18.8.36 Remote Assistance
+
+- name: "18.8.36.1 (L1) Ensure 'Configure Offer Remote Assistance' is set to 'Disabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services
+    name: "fAllowUnsolicited"
+    data: "0"
+    type: dword
+
+- name: "18.8.36.2 (L1) Ensure 'Configure Solicited Remote Assistance' is set to 'Disabled'"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services
+    name: "fAllowToGetHelp"
+    data: "0"
+    type: dword
+
+# 18.8.37  Remote Procedure Call
+
+- name: "18.8.36.1 (L1) Ensure 'Enable RPC Endpoint Mapper Client Authentication' is set to 'Enabled' (MS only)"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Rpc
+    name: "EnableAuthEpResolution"
+    data: "1"
+    type: dword

@@ -1,0 +1,23 @@
+---
+
+# 17.6 Object Access
+
+- name: "17.6.1 (L1) | Ensure 'Audit Detailed File Share' is set to include 'Failure'"
+  win_audit_policy_system:
+    subcategory: Detailed File Share
+    audit_type: failure
+
+- name: "17.6.2 (L1) | Ensure 'Audit File Share' is set to 'Success and Failure'"
+  win_audit_policy_system:
+    subcategory: File Share
+    audit_type: success, failure
+
+- name: "17.6.3 (L1) Ensure 'Audit Other Object Access Events' is set to 'Success and Failure'"
+  win_audit_policy_system:
+    subcategory: Other Object Access Events
+    audit_type: success, failure
+
+- name: "17.6.4 (L1) Ensure 'Audit Removable Storage' is set to 'Success and Failure'"
+  win_audit_policy_system:
+    subcategory: Removable Storage
+    audit_type: success, failure

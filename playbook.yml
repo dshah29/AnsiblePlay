@@ -1,0 +1,25 @@
+---
+
+# CIS-CAT Hardening Playbook
+
+- hosts: all
+  gather_facts: true
+  vars_files:
+    - 'exceptions.yml'
+  
+  pre_tasks:
+    - block:
+      - name: check if ansible controller is Linux or Windows
+        set_fact:
+          is_linux: "{{ lookup('pipe', 'uname -s') == 'Linux' | default(false) }}"
+        ignore_errors: true
+
+      - debug:
+          msg: "{{ is_linux }}"
+          verbosity: 1
+      run_once: true
+
+  roles:
+    - role: cis_hardening_windows
+      rules_list:  "{{ exceptions_list | map(attribute='rule') | list }}"
+      when: ansible_os_family == 'Windows'

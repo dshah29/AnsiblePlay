@@ -1,0 +1,33 @@
+---
+
+is_linux: true
+rules_list: []
+
+assessor_version: "4.0.11"
+
+assessor_file_url: "https://ttansible.blob.core.windows.net/private/Assessor-CLI-v4.0.11.zip?sp=r&st=2019-11-06T06:14:52Z&se=2020-11-06T14:14:52Z&spr=https&sv=2019-02-02&sr=b&sig=7Aza71LOjAaFgrfVCuIwaqD4NPggOrJH%2BpCWkqrpJdQ%3D"
+laps_file_url: 'https://download.microsoft.com/download/C/7/A/C7AAD914-A8A6-4904-88A1-29E657445D03/LAPS.x64.msi'
+java_file_url: 'https://ttansible.blob.core.windows.net/public/jre-8u211-windows-x64.exe'
+emet_file_url: 'https://ttansible.blob.core.windows.net/public/EMET Setup.msi'
+
+security_operations_scripts: "C:/scripts/gso"
+
+cis_xml:
+  "10": 'CIS_Microsoft_Windows_10_Enterprise_Release_1809_Benchmark_v1.6.0-xccdf.xml'
+  "2012": 'CIS_Microsoft_Windows_Server_2012_R2_Benchmark_v2.3.0-xccdf.xml'
+  "2016": 'CIS_Microsoft_Windows_Server_2016_RTM_Release_1607_Benchmark_v1.1.0-xccdf.xml'
+  "2019": 'CIS_Microsoft_Windows_Server_2019_Benchmark_v1.0.0-xccdf.xml'
+
+profile: 
+  server: 'xccdf_org.cisecurity.benchmarks_profile_Level_1_-_Member_Server'
+  desktop: 'xccdf_org.cisecurity.benchmarks_profile_Level_1_L1_-_CorporateEnterprise_Environment_general_use'
+
+assessor_profile: "{{ (win_version == '10') | ternary(profile.desktop, profile.server) }}"
+
+assessor_cmd: "{{ security_operations_scripts }}/Assessor-CLI-v{{ assessor_version }}/Assessor-CLI/Assessor-CLI.bat -b benchmarks/{{ cis_xml[win_version] }} -p {{ assessor_profile }} -html -narf"
+
+# For storing reports
+azure_resource_group: 'tt-control'
+azure_storage_account: 'ttansible'
+azure_storage_container: 'cis-accessor-reports'
+azure_sas_token: '?sv=2019-02-02&ss=b&srt=sco&sp=rwlac&se=2020-11-01T04:42:05Z&st=2019-10-31T20:42:05Z&spr=https&sig=YwSWJ9LFSV5NbOx6JL8EKZL2TNB6Ij4UelBaFiutCzk%3D'

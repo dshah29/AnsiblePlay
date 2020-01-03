@@ -1,0 +1,28 @@
+---
+
+# 17.7 Policy Change
+
+- name: "17.7.1 (L1)  Ensure Audit Audit Policy Change is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: Audit Policy Change
+    audit_type: success, failure
+
+- name: "17.7.2 (L1)  Ensure Audit Authentication Policy Change is set to Success"
+  win_audit_policy_system:
+    subcategory: Authentication Policy Change
+    audit_type: success
+
+- name: "17.7.3 (L1)  Ensure Audit Authorization Policy Change is set to Success"
+  win_audit_policy_system:
+    subcategory: Authorization Policy Change
+    audit_type: success
+
+- name: "17.7.4 (L1) | Ensure 'Audit MPSSVC Rule-Level Policy Change' is set to 'Success and Failure'"
+  win_audit_policy_system:
+    subcategory: MPSSVC Rule-Level Policy Change
+    audit_type: success, failure
+
+- name: "17.7.5 (L1) | Ensure 'Audit Other Policy Change Events' is set to include 'Failure'"
+  win_audit_policy_system:
+    subcategory: Other Policy Change Events
+    audit_type: failure

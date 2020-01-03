@@ -1,0 +1,40 @@
+---
+
+# Install CIS Assessor files
+
+- name: check if assessor is installed 
+  win_stat: 
+    path: "{{ security_operations_scripts }}/Assessor-CLI-v{{ assessor_version }}"
+  register: assessor_dir
+
+- block:
+    - name: Create security operations directories
+      win_file:
+        path: "{{ security_operations_scripts }}"
+        state: directory
+
+    - name: Copy the Assessor CLI archive to the host
+      win_get_url:
+        url: "{{ assessor_file_url }}" 
+        dest: "{{ security_operations_scripts }}"
+
+    - name: Unzip Assessor CLI archive
+      win_unzip:
+        src: "{{ security_operations_scripts }}/Assessor-CLI-v{{ assessor_version }}.zip"
+        dest: "{{ security_operations_scripts }}/Assessor-CLI-v{{ assessor_version }}"
+
+    - name: Install LAPS
+      win_package:
+        path: "{{ laps_file_url }}"
+        product_id: '{EA8CB806-C109-4700-96B4-F1F268E5036C}'
+        state: present
+
+    - name: Silent install of Java JRE
+      win_package:
+        path: "{{ java_file_url }}"
+        product_id: '{26A24AE4-039D-4CA4-87B4-2F64180211F0}'
+        arguments: /s
+        state: present
+  when: not assessor_dir.stat.exists
+
+

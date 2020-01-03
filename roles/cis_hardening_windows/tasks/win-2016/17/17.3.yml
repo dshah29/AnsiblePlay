@@ -1,0 +1,12 @@
+---
+# 17.3 Detailed Tracking
+
+- name: "17.3.1 (L1) Ensure Audit PNP Activity is set to Success"
+  win_audit_policy_system:
+    subcategory: Plug and Play Events
+    audit_type: success
+
+- name: "17.3.2 (L1) Ensure Audit Process Creation is set to Success"
+  win_audit_policy_system:
+    subcategory: Process Creation
+    audit_type: success

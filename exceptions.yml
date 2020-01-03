@@ -1,0 +1,53 @@
+---
+
+exceptions_list:
+
+  - rule: '2.2.16'
+    reason: "same rule as 2.2.21"
+    win_version: 10
+
+  - rule: '2.2.21'
+    reason: "Can't include local account since we are not domain joined and all accounts are local"
+
+  - rule: '2.2.26'
+    reason: "Can't include local account since we are not domain joined and all accounts are local"
+
+  - rule: '2.3.1.1'
+    reason: "Breaks Ansible run"
+    
+  - rule: '2.3.1.5'
+    reason: "Breaks for AWS builder (which runs on 'Administrator' account). Seems to pass for Azure & shows as passing in benchmarks (even when included here in rule_exceptions)"
+
+  - rule: '2.3.11.4'
+    reason: "On Domain Controllers: causes connection issues during upgrades on customers on Staging Gov because of communication failure between old stack and the new stack that is created."
+
+  - rule: '2.3.11.10'
+    reason: "Breaks older versions of Packer (even when connecting with NTLM auth)"
+
+  - rule: '2.3.17.1'
+    reason: "Breaks Ansible run"
+
+  - rule: '9.3.5'
+    reason: "Enabling this rule breaks RDP and WinRM connections to the node."
+
+
+  #- rule: '18.9.24.5' (L1) Ensure 'Default Protections for Recommended Software' is set to 'Enabled'
+  #  win_version: 2012
+  #  reason: rule seems correct but test shows fail   
+    
+  # TEMPORARY FOR TESTING
+  - rule: '18.9.97.2.1'
+    reason: "For testing WinRM doesn't use Cred. Switch WinRM Service to use CredSSP and then enable this rule."
+
+  - rule: '18.9.76.13.1.1'
+    reason: "Breaks Packer run"
+
+  - rule: '18.9.76.13.1.2'
+    reason: "Breaks Packer run"
+
+  - rule: '18.9.77.13.1.1'
+    reason: "Same as 18.9.76.13.1.1 but different number on win2019 "
+
+  - rule: '18.9.77.13.1.2'
+    reason: "Same as 18.9.76.13.1.2 but different number on win2019 "
+

@@ -1,0 +1,12 @@
+[defaults]
+inventory = hosts
+strategy = free
+
+# for timestamping tasks
+callback_whitelist = profile_tasks 
+
+# Mitogen (for possible improved runtime)
+# May disable without affecting playbook
+strategy_plugins = plugins/mitogen-0.2.8/ansible_mitogen/plugins/strategy
+strategy = mitogen_linear
+connection_plugins  = /home/darshan1/.ansible/plugins/connection_plugins

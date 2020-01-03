@@ -1,0 +1,16 @@
+[win2012]
+abc123-wins2012.westus.cloudapp.azure.com
+
+[win2016]
+abc123-wins2016.westus.cloudapp.azure.com
+
+[win2019]
+abc123-wins2019.westus.cloudapp.azure.com
+
+[all:vars]
+ansible_user=userid
+ansible_password=****
+ansible_connection=winrm
+#disable this for prod
+ansible_winrm_server_cert_validation=ignore 
+

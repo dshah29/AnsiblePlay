@@ -1,0 +1,63 @@
+---
+
+# upload html report to blob storage
+#
+- name: Get all reports
+  win_find:
+    paths: "{{ security_operations_scripts }}/Assessor-CLI-v{{ assessor_version }}/Assessor-CLI/reports/"
+  register: report_files
+
+- name: Get latest file
+  set_fact:
+    latest_report: "{{ report_files.files | sort(attribute='lastwritetime',reverse=true) | first }}"
+
+- name: report filename
+  debug:
+   var: latest_report.filename
+
+- name: download report to ansible host 
+  fetch:
+    src: "{{ security_operations_scripts }}/Assessor-CLI-v{{ assessor_version }}/Assessor-CLI/reports/{{ latest_report.filename}}"
+    dest: "{{ playbook_dir }}/reports/"
+    flat: yes
+
+- set_fact:
+    report_filepath: "{{ playbook_dir }}/reports/{{ latest_report.filename }}"
+
+# Can use azure_rm_storageblob module here but the dependencies for using the module is more complex to resolve
+- block:
+    - name: Linux - upload report to Azure storage blob
+      command: >-
+        az storage blob upload 
+        --file={{ report_filepath }}
+        --container-name={{ azure_storage_container }} 
+        --name={{ latest_report.filename }}
+        --account-name={{ azure_storage_account }}
+        --sas-token="{{ azure_sas_token}}"
+      register: upload
+      when: is_linux
+    - name: Windows -upload report to Azure storage blob
+      win_command: >-
+        az storage blob upload 
+        --file={{ report_filepath }}
+        --container-name={{ azure_storage_container }} 
+        --name={{ latest_report.filename }}
+        --account-name={{ azure_storage_account }}
+        --sas-token="{{ azure_sas_token}}"
+      register: upload
+      when: not is_linux
+  delegate_to: localhost
+
+- block:
+    - name: remove report on host
+      file:
+        state: absent
+        path: "{{ report_filepath }}"
+      when: is_linux
+    - name: remove report on host
+      win_file:
+        state: absent
+        path: "{{ report_filepath }}"
+      when: not is_linux
+  when: upload is succeeded 
+  delegate_to: localhost

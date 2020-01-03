@@ -1,0 +1,19 @@
+---
+
+# 2.3.2 Audit 
+#
+- name: "2.3.2.1 (L1) Ensure 'Audit: Force audit policy subcategory settings (Windows Vista or later) to override audit policy category settings' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: "SCENoApplyLegacyAuditPolicy"
+    data: "1"
+    type: dword
+
+- name: "2.3.2.2 (L1) Ensure 'Audit: Shut down system immediately if unable to log security audits' is set to 'Disabled'"
+  win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Lsa
+    name: "CrashOnAuditFail"
+    data: "0"
+    type: dword
+
+

@@ -1,0 +1,9 @@
+---
+# 19.5
+
+- name: "19.5.1.1 (L1) Ensure 'Turn off toast notifications on the lock screen' is set to 'Enabled' "
+  win_regedit:
+    path: HKU:\.DEFAULT\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\PushNotifications
+    name: "NoToastApplicationNotificationOnLockScreen"
+    data: "1"
+    type: dword

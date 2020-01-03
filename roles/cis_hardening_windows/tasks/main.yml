@@ -1,0 +1,51 @@
+---
+
+- name: get windows version 
+  set_fact:
+    win_version: "{{ ansible_distribution | regex_search(expr) }}"
+  vars: 
+    expr: '\d{2,4}'
+
+- debug:
+    var: win_version
+
+- name: "fail if not windows 10, 2019, 2016, 2012"
+  fail:
+    msg: "Playbook designed to run only on the following Windows versions: 10, 2019, 2016, 2012"
+  when: win_version not in ['10','2019','2016','2012']
+
+- name: install CIS benchmark assessor scripts
+  include_tasks: assessor_install.yml
+  tags: assessor_install
+
+- name: get initial benchmark score
+  win_command: "{{ assessor_cmd }}" 
+  register: initial_score
+  tags: initial_score
+
+- name: run hardening tasks
+  include_tasks: "win-{{ win_version }}/main.yml"
+
+- name: pre-hardening score 
+  debug: 
+    msg: "{{ initial_score.stdout_lines[-29:-22] }}"
+  when: initial_score is defined
+
+- block:
+    - name: get post-hardening score
+      win_command: "{{ assessor_cmd }}" 
+      register: post_score
+
+    - name: post-hardening score 
+      debug: 
+        msg: "{{ post_score.stdout_lines[-29:-22] }}"
+  tags: post_score
+
+# MUST HAVE AZ CLI INSTALLED
+- name: upload report to storage
+  import_tasks: get_report.yml
+  tags: 
+    - never
+    - get_report
+
+

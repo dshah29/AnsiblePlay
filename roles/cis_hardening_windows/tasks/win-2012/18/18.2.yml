@@ -1,0 +1,45 @@
+---
+
+# 18.2 LAPS
+
+- name: "18.2.1 (L1) Ensure LAPS AdmPwd GPO Extension / CSE is installed (MS only)"
+  win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\GPExtensions\{D76B9641-3288-4f75-942D087DE603E3EA}
+    name: "DllName"
+    data: ""
+    type: dword
+  
+- name: "18.2.2 (L1) Ensure 'Do not allow password expiration time longer than required by policy' is set to 'Enabled' (MS only)"
+  win_regedit:
+    path: HKLM:\Software\Policies\Microsoft Services\AdmPwd
+    name: "PwdExpirationProtectionEnabled"
+    data: "1"
+    type: dword
+
+- name: "18.2.3 (L1) Ensure 'Enable Local Admin Password Management' is set to 'Enabled' (MS only)"
+  win_regedit:
+    path: HKLM:\Software\Policies\Microsoft Services\AdmPwd
+    name: "AdmPwdEnabled"
+    data: "1"
+    type: dword
+
+- name: "18.2.4 (L1) Ensure 'Password Settings: Password Complexity' is set to 'Enabled: Large letters + small letters + numbers + special characters' (MS only)"
+  win_regedit:
+    path: HKLM:\Software\Policies\Microsoft Services\AdmPwd
+    name: "PasswordComplexity"
+    data: "4"
+    type: dword
+
+- name: "18.2.5 (L1) Ensure 'Password Settings: Password Length' is set to 'Enabled: 15 or more' (MS only)"
+  win_regedit:
+    path: HKLM:\Software\Policies\Microsoft Services\AdmPwd
+    name: "PasswordLength"
+    data: "15"
+    type: dword
+
+- name: "18.2.6 (L1) Ensure 'Password Settings: Password Age (Days)' is set to 'Enabled: 30 or fewer' (MS only)"
+  win_regedit:
+    path: HKLM:\Software\Policies\Microsoft Services\AdmPwd
+    name: "PasswordAgeDays"
+    data: "30"
+    type: dword

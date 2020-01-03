@@ -1,0 +1,11 @@
+---
+
+# System objects
+- name: "2.3.15.1 (L1) Ensure 'System objects: Require case insensitivity for non-Windows subsystems' is set to 'Enabled'"
+  win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Kernel
+    name: "ObCaseInsensitive"
+    data: "1"
+    type: dword
+
+

@@ -1,0 +1,8 @@
+---
+
+# 17.8 Priviledge Use
+
+- name: "17.8.1 (L1) Ensure Audit Sensitive Privilege Use is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: Sensitive Privilege Use
+    audit_type: success, failure

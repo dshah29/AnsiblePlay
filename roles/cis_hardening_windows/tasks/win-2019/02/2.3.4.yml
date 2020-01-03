@@ -1,0 +1,18 @@
+---
+
+# Devices
+- name: "2.3.4.1 (L1) Ensure 'Devices: Allowed to format and eject removable media' is set to 'Administrators'"
+  win_regedit:
+    path: HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Winlogon
+    name: "AllocateDASD"
+    data: "0"
+    type: string
+
+- name: "2.3.4.2 (L1) Ensure 'Audit: Shut down system immediately if unable to log security audits' is set to 'Disabled'"
+  win_regedit:
+    path: HKLM:\SYSTEM\CurrentControlSet\Control\Print\Providers\LanMan Print Services\Servers
+    name: "AddPrinterDrivers"
+    data: "1"
+    type: dword
+
+

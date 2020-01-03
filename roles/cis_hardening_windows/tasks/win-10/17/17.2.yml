@@ -1,0 +1,23 @@
+---
+
+# 17.2 Account Management
+ 
+- name: "17.2.1 (L1) Ensure Audit Application Group Management is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: Application Group Management
+    audit_type: success, failure
+
+- name: "17.2.2 (L1) Ensure Audit Computer Account Management is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: Computer Account Management
+    audit_type: success, failure
+
+- name: "17.2.3 (L1) Ensure Audit Security Group Management is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: Security Group Management
+    audit_type: success, failure
+
+- name: "17.2.4 (L1) Ensure Audit User Account Management is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: User Account Management
+    audit_type: success, failure

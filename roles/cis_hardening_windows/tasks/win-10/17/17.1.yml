@@ -1,0 +1,8 @@
+---
+
+# 17.1 Account Logon
+ 
+- name: "17.1.1 (L1) Ensure Audit Credential Validation is set to Success and Failure"
+  win_audit_policy_system:
+    subcategory: Credential Validation
+    audit_type: success, failure
